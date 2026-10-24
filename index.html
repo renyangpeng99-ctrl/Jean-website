@@ -60,8 +60,21 @@ button {
 <label>合同单价（USD/吨）</label>
 <input id="price" type="number" value="0.8" min="0" step="any">
 
-<label>月总成本（USD）</label>
-<input id="cost" type="number" value="72000" min="0" step="any">
+<label>设备租赁（USD）</label>
+<input id="equipment" type="number" value="30000" min="0">
+
+<label>柴油费用（USD）</label>
+<input id="fuel" type="number" value="18000" min="0">
+
+<label>人工费用（USD）</label>
+<input id="labor" type="number" value="12000" min="0">
+
+<label>维修保养（USD）</label>
+<input id="repair" type="number" value="7000" min="0">
+
+<label>其他费用（USD）</label>
+<input id="other" type="number" value="5000" min="0">
+
 
 <button onclick="calculate()">计算项目利润</button>
 
@@ -74,10 +87,16 @@ button {
 function calculate() {
   const quantity = Number(document.getElementById("quantity").value);
   const price = Number(document.getElementById("price").value);
-  const cost = Number(document.getElementById("cost").value);
+  const equipment = Number(document.getElementById("equipment").value);
+  const fuel = Number(document.getElementById("fuel").value);
+  const labor = Number(document.getElementById("labor").value);
+  const repair = Number(document.getElementById("repair").value);
+  const other = Number(document.getElementById("other").value);
+  const cost = equipment + fuel + labor + repair + other;
 
-  if (![quantity, price, cost].every(Number.isFinite) ||
-      quantity < 0 || price < 0 || cost < 0) {
+
+  if [quantity, price, equipment, fuel, labor, repair, other].every(Number.isFinite)|
+      quantity < 0 || price < 0 || [equipment, fuel, labor, repair, other].some(v => v < 0) {
     document.getElementById("result").textContent = "请输入有效的非负数。";
     return;
   }
