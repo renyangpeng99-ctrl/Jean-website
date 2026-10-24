@@ -1,22 +1,100 @@
+
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>JEAN的个人网站</title>
+<title>JEAN 工程报价计算器</title>
 <style>
-body { font-family: Arial, sans-serif; background: #f1f5f9; text-align: center; padding: 60px 20px; }
-h1 { color: #1d4ed8; }
-p { color: #475569; }
-.card { background: white; padding: 35px; border-radius: 15px; max-width: 550px; margin: auto; box-shadow: 0 4px 15px #ddd; }
+body {
+  font-family: Arial, sans-serif;
+  background: #f1f5f9;
+  padding: 30px 15px;
+  color: #1e293b;
+}
+.card {
+  background: white;
+  max-width: 500px;
+  margin: 30px auto;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px #ddd;
+}
+h1 { color: #1d4ed8; text-align: center; }
+label { display: block; margin-top: 18px; }
+input {
+  width: 100%;
+  padding: 12px;
+  margin-top: 7px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+button {
+  width: 100%;
+  margin-top: 25px;
+  padding: 14px;
+  background: #1d4ed8;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.result {
+  margin-top: 25px;
+  padding: 18px;
+  background: #eff6ff;
+  border-radius: 10px;
+  line-height: 2;
+}
 </style>
 </head>
 <body>
 <div class="card">
-<h1>欢迎来到 JEAN 的个人网站！</h1>
-<p>这是我使用 GitHub 和 ChatGPT 创建的第一个网页。</p>
-<p>我正在学习人工智能和数字化工具。</p>
-<p>未来，这里将展示我的项目和作品。</p>
+<h1>工程报价计算器</h1>
+<p style="text-align:center">JEAN 项目管理工具</p>
+
+<label>月工程量（吨）</label>
+<input id="quantity" type="number" value="120000" min="0">
+
+<label>合同单价（USD/吨）</label>
+<input id="price" type="number" value="0.8" min="0" step="any">
+
+<label>月总成本（USD）</label>
+<input id="cost" type="number" value="72000" min="0" step="any">
+
+<button onclick="calculate()">计算项目利润</button>
+
+<div class="result" id="result">
+请输入数据，点击按钮计算。
 </div>
+</div>
+
+<script>
+function calculate() {
+  const quantity = Number(document.getElementById("quantity").value);
+  const price = Number(document.getElementById("price").value);
+  const cost = Number(document.getElementById("cost").value);
+
+  if (![quantity, price, cost].every(Number.isFinite) ||
+      quantity < 0 || price < 0 || cost < 0) {
+    document.getElementById("result").textContent = "请输入有效的非负数。";
+    return;
+  }
+
+  const revenue = quantity * price;
+  const profit = revenue - cost;
+  const margin = revenue > 0 ? (profit / revenue * 100).toFixed(2) + "%" : "—";
+  const money = n => n.toLocaleString("en-US", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  });
+
+  document.getElementById("result").innerHTML =
+    "营业收入：" + money(revenue) + " USD<br>" +
+    "预计利润：" + money(profit) + " USD<br>" +
+    "利润率：" + margin;
+}
+</script>
 </body>
 </html>
