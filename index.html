@@ -95,8 +95,10 @@ function calculate() {
   const cost = equipment + fuel + labor + repair + other;
 
 
-  if [quantity, price, equipment, fuel, labor, repair, other].every(Number.isFinite)|
-      quantity < 0 || price < 0 || [equipment, fuel, labor, repair, other].some(v => v < 0) {
+
+if (![quantity, price, equipment, fuel, labor, repair, other].every(Number.isFinite) ||
+    quantity < 0 || price < 0 || [equipment, fuel, labor, repair, other].some(v => v < 0)) {
+  
     document.getElementById("result").textContent = "请输入有效的非负数。";
     return;
   }
